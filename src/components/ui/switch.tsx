@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { useLanguage } from "@/contexts/language-context";
 
 export interface SwitchProps {
   checked?: boolean;
@@ -13,9 +12,6 @@ export interface SwitchProps {
 
 const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
   ({ checked = false, onCheckedChange, disabled, className }, ref) => {
-    const { dir } = useLanguage();
-    const isRTL = dir === "rtl";
-
     return (
       <button
         type="button"
@@ -33,12 +29,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         <span
           className={cn(
             "pointer-events-none block h-4 w-4 rounded-full bg-background shadow-lg ring-0 transition-transform",
-            // RTL Support: در فارسی به سمت چپ، در انگلیسی به سمت راست
-            checked
-              ? isRTL
-                ? "-translate-x-4"
-                : "translate-x-4"
-              : "translate-x-0"
+            checked ? "translate-x-4" : "translate-x-0"
           )}
         />
       </button>

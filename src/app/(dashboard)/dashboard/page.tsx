@@ -7,20 +7,12 @@ import { OverviewChart } from "@/components/dashboard/overview-chart";
 import { RecentOrders } from "@/components/dashboard/recent-orders";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { DollarSign, Users, ShoppingCart, TrendingUp } from "lucide-react";
-import { mockAuth } from "@/lib/auth";
+import { useAdmin } from "@/contexts/admin-auth-context";
 import { useLanguage } from "@/contexts/language-context";
-import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const { t } = useLanguage();
-  const [userName, setUserName] = useState("User");
-
-  useEffect(() => {
-    const user = mockAuth.getUser();
-    if (user) {
-      setUserName(user.name);
-    }
-  }, []);
+  const { name: userName } = useAdmin();
 
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ["dashboard-stats"],
@@ -40,7 +32,7 @@ export default function DashboardPage() {
   if (statsLoading || chartLoading || ordersLoading) {
     return (
       <div className="flex h-full items-center justify-center">
-        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"></div>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
       </div>
     );
   }
@@ -53,11 +45,9 @@ export default function DashboardPage() {
       {/* Welcome message */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight">
-          {t.dashboard.welcome}، {userName}!
+          {t.dashboard.welcome}, {userName}!
         </h1>
-        <p className="text-muted-foreground">
-          {t.dashboard.subtitle}
-        </p>
+        <p className="text-muted-foreground">{t.dashboard.subtitle}</p>
       </div>
 
       {/* Stats cards */}

@@ -3,7 +3,6 @@
 import { Button } from "./button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
-import { cn } from "@/lib/utils";
 
 interface PaginationProps {
   currentPage: number;
@@ -22,12 +21,14 @@ export function Pagination({
   itemsPerPage,
   showInfo = true,
 }: PaginationProps) {
-  const { t, dir } = useLanguage();
+  const { t } = useLanguage();
 
-  const startItem = totalItems && itemsPerPage ? (currentPage - 1) * itemsPerPage + 1 : 0;
-  const endItem = totalItems && itemsPerPage
-    ? Math.min(currentPage * itemsPerPage, totalItems)
-    : 0;
+  const startItem =
+    totalItems && itemsPerPage ? (currentPage - 1) * itemsPerPage + 1 : 0;
+  const endItem =
+    totalItems && itemsPerPage
+      ? Math.min(currentPage * itemsPerPage, totalItems)
+      : 0;
 
   return (
     <div className="flex flex-col-reverse items-center justify-between gap-4 sm:flex-row">
@@ -40,12 +41,7 @@ export function Pagination({
       )}
 
       {/* Pagination Controls */}
-      <div
-        className={cn(
-          "flex items-center gap-2",
-          dir === "rtl" && "flex-row-reverse"
-        )}
-      >
+      <div className="flex items-center gap-2">
         {/* Previous Button */}
         <Button
           variant="outline"
@@ -54,17 +50,8 @@ export function Pagination({
           disabled={currentPage === 1}
           className="gap-1"
         >
-          {dir === "rtl" ? (
-            <>
-              {t.users.previous}
-              <ChevronRight className="h-4 w-4" />
-            </>
-          ) : (
-            <>
-              <ChevronLeft className="h-4 w-4" />
-              {t.users.previous}
-            </>
-          )}
+          <ChevronLeft className="h-4 w-4" />
+          {t.users.previous}
         </Button>
 
         {/* Page Numbers */}
@@ -103,20 +90,10 @@ export function Pagination({
           disabled={currentPage === totalPages}
           className="gap-1"
         >
-          {dir === "rtl" ? (
-            <>
-              <ChevronLeft className="h-4 w-4" />
-              {t.users.next}
-            </>
-          ) : (
-            <>
-              {t.users.next}
-              <ChevronRight className="h-4 w-4" />
-            </>
-          )}
+          {t.users.next}
+          <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
     </div>
   );
 }
-

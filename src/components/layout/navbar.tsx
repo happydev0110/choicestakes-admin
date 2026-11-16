@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  Search,
-  Moon,
-  Sun,
-  User,
-  LogOut,
-  Menu,
-  Bell,
-  Languages,
-} from "lucide-react";
+import { Search, Moon, Sun, User, LogOut, Menu, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -23,9 +14,11 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useTheme } from "@/hooks/use-theme";
 import { useLanguage } from "@/contexts/language-context";
-import { mockAuth } from "@/lib/auth";
+import { adminAuth } from "@/lib/auth";
+import { useAdmin } from "@/contexts/admin-auth-context";
+import { toast } from "@/lib/toast";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface NavbarProps {
   onMenuClick?: () => void;
@@ -33,20 +26,25 @@ interface NavbarProps {
 
 export function Navbar({ onMenuClick }: NavbarProps) {
   const { theme, setTheme } = useTheme();
-  const { language, setLanguage, t } = useLanguage();
+  const { t } = useLanguage();
   const router = useRouter();
-  const [user, setUser] = useState<{ name: string; email: string } | null>(
-    null
-  );
+  const user = useAdmin();
+  const [loggingOut, setLoggingOut] = useState(false);
 
-  useEffect(() => {
-    const userData = mockAuth.getUser();
-    setUser(userData);
-  }, []);
-
-  const handleLogout = () => {
-    mockAuth.logout();
-    router.push("/login");
+  const handleLogout = async () => {
+    if (loggingOut) return;
+    setLoggingOut(true);
+    try {
+      await adminAuth.logout();
+      window.location.replace("/login");
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Unable to sign out. Please try again."
+      );
+      setLoggingOut(false);
+    }
   };
 
   const getInitials = (name: string) => {
@@ -67,6 +65,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
           size="icon"
           className="md:hidden"
           onClick={onMenuClick}
+          aria-label="Open navigation"
         >
           <Menu className="h-5 w-5" />
         </Button>
@@ -100,17 +99,6 @@ export function Navbar({ onMenuClick }: NavbarProps) {
             <span className="sr-only">Notifications</span>
           </Button>
 
-          {/* Language toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setLanguage(language === "fa" ? "en" : "fa")}
-            title={t.common.language}
-          >
-            <Languages className="h-5 w-5" />
-            <span className="sr-only">{t.common.language}</span>
-          </Button>
-
           {/* Theme toggle */}
           <Button
             variant="ghost"
@@ -128,6 +116,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
               <Button
                 variant="ghost"
                 className="relative h-10 w-10 rounded-full"
+                aria-label="Account menu"
               >
                 <Avatar>
                   <AvatarFallback className="bg-primary text-primary-foreground">
@@ -149,13 +138,13 @@ export function Navbar({ onMenuClick }: NavbarProps) {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => router.push("/profile")}>
-                <User className="mr-2 h-4 w-4 rtl:ml-2" />
+                <User className="mr-2 h-4 w-4" />
                 {t.nav.profile}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
-                <LogOut className="mr-2 h-4 w-4 rtl:ml-2" />
-                {t.nav.logout}
+                <LogOut className="mr-2 h-4 w-4" />
+                {loggingOut ? "Signing out..." : t.nav.logout}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

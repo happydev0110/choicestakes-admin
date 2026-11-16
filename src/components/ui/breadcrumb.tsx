@@ -4,7 +4,6 @@ import * as React from "react";
 import { ChevronRight, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useLanguage } from "@/contexts/language-context";
 
 interface BreadcrumbItem {
   label: string;
@@ -17,9 +16,6 @@ interface BreadcrumbProps {
 }
 
 export function Breadcrumb({ items, className }: BreadcrumbProps) {
-  const { dir } = useLanguage();
-  const isRtl = dir === "rtl";
-
   return (
     <nav
       aria-label="Breadcrumb"
@@ -27,31 +23,25 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
     >
       <Link
         href="/dashboard"
-        className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
+        className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
       >
         <Home className="h-4 w-4" />
       </Link>
       {items.map((item, index) => (
         <React.Fragment key={index}>
-          <ChevronRight
-            className={cn(
-              "h-4 w-4 text-muted-foreground",
-              isRtl && "rotate-180"
-            )}
-          />
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
           {item.href ? (
             <Link
               href={item.href}
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground transition-colors hover:text-foreground"
             >
               {item.label}
             </Link>
           ) : (
-            <span className="text-foreground font-medium">{item.label}</span>
+            <span className="font-medium text-foreground">{item.label}</span>
           )}
         </React.Fragment>
       ))}
     </nav>
   );
 }
-

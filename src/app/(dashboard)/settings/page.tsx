@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { mockAuth } from "@/lib/auth";
+import { useAdmin } from "@/contexts/admin-auth-context";
 import { useTheme } from "@/hooks/use-theme";
 import { useLanguage } from "@/contexts/language-context";
 import { Save } from "lucide-react";
@@ -21,20 +21,11 @@ import { Save } from "lucide-react";
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
   const { t } = useLanguage();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const { name, email } = useAdmin();
   const [selectedTheme, setSelectedTheme] = useState(theme || "system");
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(false);
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    const user = mockAuth.getUser();
-    if (user) {
-      setName(user.name);
-      setEmail(user.email);
-    }
-  }, []);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,19 +37,15 @@ export default function SettingsPage() {
     // Simulate save
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // Update user in localStorage
-    const user = mockAuth.getUser();
-    if (user) {
-      localStorage.setItem("user", JSON.stringify({ ...user, name, email }));
-    }
-
     setSaving(false);
   };
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">{t.settings.title}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">
+          {t.settings.title}
+        </h1>
         <p className="text-muted-foreground">{t.settings.subtitle}</p>
       </div>
 
@@ -76,7 +63,7 @@ export default function SettingsPage() {
                 id="name"
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                readOnly
                 placeholder={t.profile.fullName}
               />
             </div>
@@ -86,7 +73,7 @@ export default function SettingsPage() {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                readOnly
                 placeholder={t.profile.email}
               />
             </div>
@@ -111,7 +98,7 @@ export default function SettingsPage() {
                 <option value="dark">{t.settings.dark}</option>
                 <option value="system">{t.settings.system}</option>
               </Select>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-sm text-muted-foreground">
                 {t.settings.themeDesc}
               </p>
             </div>
@@ -128,7 +115,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label>{t.settings.emailNotifications}</Label>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-sm text-muted-foreground">
                   {t.settings.emailNotificationsDesc}
                 </p>
               </div>
@@ -140,7 +127,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label>{t.settings.pushNotifications}</Label>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-sm text-muted-foreground">
                   {t.settings.pushNotificationsDesc}
                 </p>
               </div>

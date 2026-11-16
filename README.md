@@ -22,14 +22,15 @@ The demo screenshot showcases the main dashboard, analytics, notifications, prof
 - ✅ **Dark/Light mode** with theme toggle
 - ✅ **React Query** for data fetching
 - ✅ **Responsive design** (mobile-friendly)
-- ✅ **Authentication pages** (Login & Register)
+- ✅ **Admin authentication** with MySQL-backed sessions and operator-created accounts
 - ✅ **Dashboard with analytics**
-- ✅ **Users data table** with sorting, filtering, and pagination
+- ✅ **Player management** with search, status filters, pagination, details and suspension
+- ✅ **Game management** with provider/category filters, portal visibility and category editing
 - ✅ **Charts** powered by Recharts
 - ✅ **Settings page** with form inputs
-- ✅ **Built‑in i18n** with Persian (fa) and English (en) translations
-- ✅ **RTL/LTR layout support** driven by a `LanguageProvider`
-- ✅ **Language toggle** in both auth pages and the main navbar
+- ✅ **English-only interface** with shared labels in `src/locales/en.ts`
+- ✅ **Left-to-right layout** on desktop and mobile, using the Inter font
+- ✅ **Consistent language** across auth pages and the dashboard, independent of saved browser preferences
 - ✅ **ESLint & Prettier** configured
 - ✅ **Mock data** for development
 
@@ -133,25 +134,26 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3001](http://localhost:3001) in your browser. Configure and start the admin backend on port 4001 first, as described below.
 
 ## 📱 Pages Overview
 
 ### Authentication
 
-- **Login (`/login`)**: User authentication page
-- **Register (`/register`)**: New user registration
+- **Login (`/login`)**: Administrator authentication
+- **Register (`/register`)**: Redirects to login; administrator accounts are created by an operator
 
 ### Dashboard Pages
 
 - **Dashboard (`/dashboard`)**: Main dashboard with stats, charts, and recent orders
-- **Users (`/users`)**: User management with sortable, searchable, filterable data table and pagination
+- **Users (`/users`)**: Database-backed player search, status filtering, pagination, details, display-name editing and suspend/reactivate controls
+- **Games (`/games`)**: Imported provider catalog with search, filters, category editing, show/hide controls and import status
 - **Orders (`/orders`)**: Simple orders table with status badges for each order
 - **Reports (`/reports`)**: Analytics and detailed reports
 - **Settings (`/settings`)**: User preferences and account settings
 - **Analytics (`/analytics`)**: Detailed analytics with metrics cards, traffic sources, top pages, and overview/engagement/conversion tabs
 - **Notifications (`/notifications`)**: Notification center with unread/read tabs, mark‑all‑as‑read, and inline actions
-- **Profile (`/profile`)**: Profile page with avatar, profile form (name, email, phone, location), password change, and recent activity
+- **Profile (`/profile`)**: Read-only details from the authenticated administrator account
 - **Components Showcase (`/components-demo`)**: Full gallery of all UI components (buttons, badges, inputs, select, switch, alerts, progress, avatar, skeleton, cards, table, tabs, dialog, dropdown, combined example, color palette)
 
 ## 🎨 Features Breakdown
@@ -164,10 +166,19 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Users Page
 
-- Sortable data table
-- Search by name or email
-- Filter by role and status
-- Pagination
+- Search by display name, email or player ID
+- Filter active/suspended accounts with server pagination
+- View account details and active sessions
+- Edit display name; suspend/reactivate accounts
+- Suspension revokes player sessions; mutations are recorded in the admin audit log
+
+### Games Page
+
+- Browse the real imported catalog for the backend's configured currency
+- Search and filter by provider, category, provider availability and portal visibility
+- Edit reviewed categories, including Featured and New Games
+- Hide/show games without changing provider metadata or losing settings during imports
+- View import status; Refresh reloads the database list (provider sync runs in the player backend)
 
 ### Settings Page
 
@@ -209,19 +220,25 @@ Toggle theme using the button in the top navbar.
 
 ## 🔐 Authentication
 
-Currently uses **mock authentication** stored in localStorage:
+Authentication uses the separate `../choicestakes-adminback` Node.js backend and its MySQL `admins` table. Follow that project's README to configure MySQL, run migrations, and create your first administrator with `npm run admin:create`.
 
-- Any email/password combination will work for login
-- After login, you'll be redirected to `/dashboard`
-- User data is stored in localStorage
+Copy `.env.example` to `.env.local` and set the server-only `ADMIN_BACKEND_INTERNAL_URL` (default `http://127.0.0.1:4001`). Add the exact frontend origin to the backend's `ADMIN_ORIGINS`. Use HTTPS and `NODE_ENV=production` when deploying the backend.
 
-**For production:** Replace mock auth in `src/lib/auth.ts` with real authentication (NextAuth.js, Auth0, etc.).
+The browser calls same-origin `/api/admin/auth/login`, `/me`, and `/logout` routes. Session cookies are HttpOnly and are verified by the backend before dashboard pages render. Old localStorage mock-login values no longer grant access. Sign-out revokes the stored session; there is no public administrator registration.
+
+Profile details are read from the authenticated account. Password resets use the backend's operator-only `admin:reset-password` command. Users and Games call authenticated `/api/admin/manage/*` proxies. Other template modules such as dashboard statistics, orders and analytics still use mock data.
+
+Before using management, apply the player backend migrations through `005_game_visibility`
+and the admin backend migrations through `002_admin_management`. Both APIs must use the
+same MySQL database and `APIMATIC_CURRENCY`. Follow the admin backend README's deployment
+order and runtime database grants. Missing database access shows a retryable error;
+these pages never fall back to sample records.
 
 ## 📊 Mock Data
 
 Mock data is located in `src/data/`:
 
-- `mock-users.json`: User data
+- `mock-users.json`: Legacy template data (not used by User management)
 - `mock-orders.json`: Order data
 - `mock-stats.json`: Dashboard statistics
 - `mock-chart.json`: Chart data
@@ -262,8 +279,8 @@ Edit sidebar navigation in `src/components/layout/sidebar.tsx`.
 Create a `.env.local` file for environment variables:
 
 ```env
-# Add your environment variables here
-NEXT_PUBLIC_API_URL=https://your-api.com
+# Server-only address of the admin backend
+ADMIN_BACKEND_INTERNAL_URL=http://127.0.0.1:4001
 ```
 
 ## 🤝 Contributing

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
   Users,
+  Gamepad2,
   ShoppingCart,
   BarChart3,
   Settings,
@@ -43,7 +44,7 @@ interface SidebarProps {
 
 export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
   const pathname = usePathname();
-  const { t, dir } = useLanguage();
+  const { t } = useLanguage();
   const [openMenus, setOpenMenus] = useState<string[]>([]);
 
   const toggleMenu = (name: string) => {
@@ -56,7 +57,7 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
 
   const sections: NavSection[] = [
     {
-      title: dir === "rtl" ? "اصلی" : "Main",
+      title: "Main",
       items: [
         {
           name: t.nav.dashboard,
@@ -69,9 +70,14 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
           icon: TrendingUp,
         },
         {
-          name: t.nav.users,
+          name: "User management",
           href: "/users",
           icon: Users,
+        },
+        {
+          name: "Games management",
+          href: "/games",
+          icon: Gamepad2,
         },
         {
           name: t.nav.orders,
@@ -81,29 +87,29 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
       ],
     },
     {
-      title: dir === "rtl" ? "گزارش‌ها" : "Reports",
+      title: "Reports",
       items: [
         {
           name: t.nav.reports,
           icon: BarChart3,
           children: [
             {
-              name: dir === "rtl" ? "گزارش فروش" : "Sales Report",
+              name: "Sales Report",
               href: "/reports/sales",
               icon: TrendingUp,
             },
             {
-              name: dir === "rtl" ? "گزارش تحلیلی" : "Analytics Report",
+              name: "Analytics Report",
               href: "/reports/analytics",
               icon: PieChart,
             },
             {
-              name: dir === "rtl" ? "گزارش عملکرد" : "Performance Report",
+              name: "Performance Report",
               href: "/reports/performance",
               icon: TrendingDown,
             },
             {
-              name: dir === "rtl" ? "گزارش‌های عمومی" : "General Reports",
+              name: "General Reports",
               href: "/reports",
               icon: FileText,
             },
@@ -112,7 +118,7 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
       ],
     },
     {
-      title: dir === "rtl" ? "رابط کاربری" : "Interface",
+      title: "Interface",
       items: [
         {
           name: t.nav.notifications,
@@ -120,14 +126,14 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
           icon: Bell,
         },
         {
-          name: dir === "rtl" ? "کامپوننت‌ها" : "Components",
+          name: "Components",
           href: "/components-demo",
           icon: Boxes,
         },
       ],
     },
     {
-      title: dir === "rtl" ? "حساب کاربری" : "Account",
+      title: "Account",
       items: [
         {
           name: t.nav.profile,
@@ -157,19 +163,13 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
             onClick={() => toggleMenu(item.name)}
             className={cn(
               "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-              dir === "rtl" ? "space-x-reverse" : "",
               isChildActive
                 ? "bg-accent text-accent-foreground"
                 : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
             )}
             title={isCollapsed ? item.name : undefined}
           >
-            <div
-              className={cn(
-                "flex items-center gap-3",
-                dir === "rtl" ? "flex-row-reverse" : ""
-              )}
-            >
+            <div className="flex items-center gap-3">
               <item.icon className="h-5 w-5 flex-shrink-0" />
               {!isCollapsed && <span>{item.name}</span>}
             </div>
@@ -183,9 +183,7 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
             )}
           </button>
           {!isCollapsed && isOpen && (
-            <div
-              className={cn("mt-1 space-y-1", dir === "rtl" ? "mr-4" : "ml-4")}
-            >
+            <div className="ml-4 mt-1 space-y-1">
               {item.children?.map((child) => renderNavItem(child, depth + 1))}
             </div>
           )}
@@ -199,7 +197,6 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
         href={item.href!}
         className={cn(
           "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-          dir === "rtl" ? "" : "",
           depth > 0 && "py-1.5",
           isActive
             ? "bg-primary text-primary-foreground"
@@ -223,16 +220,11 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
       {/* Logo */}
       <div className="flex h-16 items-center border-b px-4">
         {!isCollapsed && (
-          <Link
-            href="/dashboard"
-            className={cn("flex items-center gap-2 justify-end", dir === "rtl" ? "" : "")}
-          >
+          <Link href="/dashboard" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
               <LayoutDashboard className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="text-lg font-bold">
-              {dir === "rtl" ? "پنل مدیریت" : "Admin"}
-            </span>
+            <span className="text-lg font-bold">Admin</span>
           </Link>
         )}
         {isCollapsed && (
@@ -248,12 +240,7 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
       <nav className="flex-1 space-y-4 overflow-y-auto p-2">
         {sections.map((section) => (
           <div key={section.title} className="space-y-1">
-            <p
-              className={cn(
-                "px-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground",
-                dir === "rtl" ? "text-right" : "text-left"
-              )}
-            >
+            <p className="px-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               {section.title}
             </p>
             {section.items.map((item) => renderNavItem(item))}
@@ -272,9 +259,7 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
           <ChevronLeft
             className={cn(
               "h-5 w-5 transition-transform",
-              isCollapsed && "rotate-180",
-              dir === "rtl" && !isCollapsed && "rotate-180",
-              dir === "rtl" && isCollapsed && "rotate-0"
+              isCollapsed && "rotate-180"
             )}
           />
         </Button>

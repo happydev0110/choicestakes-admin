@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,7 +27,7 @@ interface Notification {
 }
 
 export default function NotificationsPage() {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: "1",
@@ -114,7 +111,9 @@ export default function NotificationsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{t.notifications.title}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {t.notifications.title}
+          </h1>
           <p className="text-muted-foreground">
             {unreadCount} {t.notifications.unreadCount}
           </p>
@@ -132,9 +131,7 @@ export default function NotificationsPage() {
           <TabsTrigger value="all">
             {t.notifications.all} ({notifications.length})
           </TabsTrigger>
-          <TabsTrigger value="unread">
-            {language === "fa" ? "خوانده نشده" : "Unread"} ({unreadCount})
-          </TabsTrigger>
+          <TabsTrigger value="unread">Unread ({unreadCount})</TabsTrigger>
           <TabsTrigger value="read">
             {t.notifications.read} ({notifications.length - unreadCount})
           </TabsTrigger>
@@ -145,7 +142,9 @@ export default function NotificationsPage() {
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <Bell className="mb-4 h-12 w-12 text-muted-foreground" />
-                <p className="text-muted-foreground">{t.notifications.noNotifications}</p>
+                <p className="text-muted-foreground">
+                  {t.notifications.noNotifications}
+                </p>
               </CardContent>
             </Card>
           ) : (
@@ -165,7 +164,11 @@ export default function NotificationsPage() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <h3 className="font-semibold">
-                            {t.notifications[notification.titleKey as keyof typeof t.notifications]}
+                            {
+                              t.notifications[
+                                notification.titleKey as keyof typeof t.notifications
+                              ]
+                            }
                           </h3>
                           {!notification.read && (
                             <Badge variant="default" className="text-xs">
@@ -174,10 +177,18 @@ export default function NotificationsPage() {
                           )}
                         </div>
                         <p className="mt-1 text-sm text-muted-foreground">
-                          {t.notifications[notification.messageKey as keyof typeof t.notifications]}
+                          {
+                            t.notifications[
+                              notification.messageKey as keyof typeof t.notifications
+                            ]
+                          }
                         </p>
                         <p className="mt-2 text-xs text-muted-foreground">
-                        {t.notifications[notification.timeKey as keyof typeof t.notifications]}
+                          {
+                            t.notifications[
+                              notification.timeKey as keyof typeof t.notifications
+                            ]
+                          }
                         </p>
                       </div>
                       <div className="flex gap-2">
@@ -211,7 +222,9 @@ export default function NotificationsPage() {
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <Check className="mb-4 h-12 w-12 text-green-600" />
-                <p className="text-muted-foreground">{t.notifications.allCaughtUp}</p>
+                <p className="text-muted-foreground">
+                  {t.notifications.allCaughtUp}
+                </p>
               </CardContent>
             </Card>
           ) : (
@@ -230,17 +243,29 @@ export default function NotificationsPage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
                             <h3 className="font-semibold">
-                              {t.notifications[notification.titleKey as keyof typeof t.notifications]}
+                              {
+                                t.notifications[
+                                  notification.titleKey as keyof typeof t.notifications
+                                ]
+                              }
                             </h3>
                             <Badge variant="default" className="text-xs">
                               {t.notifications.new}
                             </Badge>
                           </div>
                           <p className="mt-1 text-sm text-muted-foreground">
-                            {t.notifications[notification.messageKey as keyof typeof t.notifications]}
+                            {
+                              t.notifications[
+                                notification.messageKey as keyof typeof t.notifications
+                              ]
+                            }
                           </p>
                           <p className="mt-2 text-xs text-muted-foreground">
-                            {t.notifications[notification.timeKey as keyof typeof t.notifications]}
+                            {
+                              t.notifications[
+                                notification.timeKey as keyof typeof t.notifications
+                              ]
+                            }
                           </p>
                         </div>
                         <div className="flex gap-2">
@@ -282,13 +307,25 @@ export default function NotificationsPage() {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <h3 className="font-semibold">
-                          {t.notifications[notification.titleKey as keyof typeof t.notifications]}
+                          {
+                            t.notifications[
+                              notification.titleKey as keyof typeof t.notifications
+                            ]
+                          }
                         </h3>
                         <p className="mt-1 text-sm text-muted-foreground">
-                          {t.notifications[notification.messageKey as keyof typeof t.notifications]}
+                          {
+                            t.notifications[
+                              notification.messageKey as keyof typeof t.notifications
+                            ]
+                          }
                         </p>
                         <p className="mt-2 text-xs text-muted-foreground">
-                          {t.notifications[notification.timeKey as keyof typeof t.notifications]}
+                          {
+                            t.notifications[
+                              notification.timeKey as keyof typeof t.notifications
+                            ]
+                          }
                         </p>
                       </div>
                       <Button

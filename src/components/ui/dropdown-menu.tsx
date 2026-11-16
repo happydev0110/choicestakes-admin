@@ -81,8 +81,8 @@ const DropdownMenuContent = ({
   if (!open) return null;
 
   const alignmentClasses = {
-    start: "left-0 origin-top-left rtl:left-auto rtl:right-0 rtl:origin-top-right",
-    end: "right-0 origin-top-right rtl:right-auto rtl:left-0 rtl:origin-top-left",
+    start: "left-0 origin-top-left",
+    end: "right-0 origin-top-right",
     center: "left-1/2 -translate-x-1/2 origin-top",
   };
 
@@ -90,7 +90,7 @@ const DropdownMenuContent = ({
     <div
       ref={ref}
       className={cn(
-        "bg-popover text-popover-foreground absolute z-50 mt-2 w-56 rounded-md border p-1 shadow-lg",
+        "absolute z-50 mt-2 w-56 rounded-md border bg-popover p-1 text-popover-foreground shadow-lg",
         alignmentClasses[align],
         className
       )}
@@ -113,7 +113,7 @@ const DropdownMenuItem = ({
     <div
       onClick={onClick}
       className={cn(
-        "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground relative flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm transition-colors outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className
       )}
     >
@@ -137,7 +137,7 @@ const DropdownMenuLabel = ({
 };
 
 const DropdownMenuSeparator = ({ className }: { className?: string }) => {
-  return <div className={cn("bg-border -mx-1 my-1 h-px", className)} />;
+  return <div className={cn("-mx-1 my-1 h-px bg-border", className)} />;
 };
 
 export {
