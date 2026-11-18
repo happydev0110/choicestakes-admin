@@ -304,3 +304,8 @@ This project is open source and available under the MIT License.
 **Built with ❤️ using Next.js 15 — by [Darvix](https://darvix.ir/)**  
 Darvix: توسعه وب، طراحی UI/UX و محصولات دیجیتال مدرن با تکنولوژی‌های روز.  
 وب‌سایت: [`https://darvix.ir/`](https://darvix.ir/)
+
+# Create Admin
+npm run db:check
+npm run db:migrate
+npm run admin:create -- --email your-email@example.com --name "Administrator"
