@@ -50,12 +50,13 @@ export class ManagementError extends Error {
 }
 export async function managementRequest<T>(
   path: string,
-  body?: unknown
+  body?: unknown,
+  method: "POST" | "PATCH" = "PATCH"
 ): Promise<T> {
   let response: Response;
   try {
     response = await fetch("/api/admin/manage/" + path, {
-      method: body === undefined ? "GET" : "PATCH",
+      method: body === undefined ? "GET" : method,
       cache: "no-store",
       credentials: "same-origin",
       headers:
@@ -93,6 +94,9 @@ export const categoryNames: Record<string, string> = {
   "lotto-scratch": "Lotto & scratch",
   roulette: "Roulette",
   poker: "Poker",
+  blackjack: "Blackjack",
+  baccarat: "Baccarat",
+  bingo: "Bingo",
 };
 export function formatDate(value: string | null | undefined) {
   return value ? new Date(value).toLocaleString() : "Not yet";

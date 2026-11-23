@@ -156,6 +156,8 @@ function GameForm({
         <p className="text-sm text-muted-foreground">
           Featured and New games are curated sections. With no categories
           selected, visible games still appear in All Games.
+          {" "}A game can belong to several categories. Empty categories are hidden
+          from the portal category menu until an available, visible game is assigned.
         </p>
       </fieldset>
       {mutation.error && (

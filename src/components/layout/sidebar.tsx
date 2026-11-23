@@ -7,6 +7,8 @@ import {
   LayoutDashboard,
   Users,
   Gamepad2,
+  Trophy,
+  Link2,
   ShoppingCart,
   BarChart3,
   Settings,
@@ -80,9 +82,19 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
           icon: Gamepad2,
         },
         {
+          name: "Loyalty XP",
+          href: "/loyalty",
+          icon: Trophy,
+        },
+        {
           name: t.nav.orders,
           href: "/orders",
           icon: ShoppingCart,
+        },
+        {
+          name: "Partner Offers",
+          href: "/partner-offers",
+          icon: Link2,
         },
       ],
     },
