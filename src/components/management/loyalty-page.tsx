@@ -628,9 +628,9 @@ export default function LoyaltyPage() {
         </span>
       </div>
       <p className="rounded-lg border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
-        XP changes here affect sandbox loyalty records. Automatic XP from bets
-        and the portal progress display are not connected yet. Wallet balances
-        and cashback are unaffected.
+        XP changes here affect sandbox loyalty records. Players see updates on
+        the loyalty page after refreshing. Automatic XP from bets is not enabled
+        yet. Wallet balances and cashback are unaffected.
       </p>
       <div className="flex gap-2" aria-label="Loyalty management sections">
         <Button

@@ -26,8 +26,6 @@ admin-dashboard-next/
 │   │   │   │   └── metadata.ts      # Page metadata
 │   │   │   ├── users/
 │   │   │   │   └── page.tsx         # Users management
-│   │   │   ├── orders/
-│   │   │   │   └── page.tsx         # Orders list
 │   │   │   ├── reports/
 │   │   │   │   └── page.tsx         # Reports & analytics
 │   │   │   ├── settings/
@@ -137,7 +135,6 @@ Tailwind CSS configuration with:
 
 - **dashboard/page.tsx**: Main dashboard with stats, chart, and table
 - **users/page.tsx**: User management with sortable, filterable data table
-- **orders/page.tsx**: Order listing page
 - **reports/page.tsx**: Analytics and reports
 - **settings/page.tsx**: User settings and preferences
 - **layout.tsx**: Dashboard layout with sidebar and navbar

@@ -11,7 +11,7 @@ A beautiful, modern admin dashboard built with **Next.js 15**, **TypeScript**, *
 
 ![Admin Dashboard Demo](./public/demo.webp)
 
-The demo screenshot showcases the main dashboard, analytics, notifications, profile, and components showcase pages.
+The demo screenshot is from the original template. The standalone Orders and Components Showcase pages have been removed from this project.
 
 ## 🚀 Features
 
@@ -62,8 +62,6 @@ admin-dashboard-next/
 │   │   │   ├── dashboard/
 │   │   │   │   └── page.tsx
 │   │   │   ├── users/
-│   │   │   │   └── page.tsx
-│   │   │   ├── orders/
 │   │   │   │   └── page.tsx
 │   │   │   ├── reports/
 │   │   │   │   └── page.tsx
@@ -148,13 +146,11 @@ Open [http://localhost:3001](http://localhost:3001) in your browser. Configure a
 - **Dashboard (`/dashboard`)**: Main dashboard with stats, charts, and recent orders
 - **Users (`/users`)**: Database-backed player search, status filtering, pagination, details, display-name editing and suspend/reactivate controls
 - **Games (`/games`)**: Imported provider catalog with search, filters, category editing, show/hide controls and import status
-- **Orders (`/orders`)**: Simple orders table with status badges for each order
 - **Reports (`/reports`)**: Analytics and detailed reports
 - **Settings (`/settings`)**: User preferences and account settings
 - **Analytics (`/analytics`)**: Detailed analytics with metrics cards, traffic sources, top pages, and overview/engagement/conversion tabs
 - **Notifications (`/notifications`)**: Notification center with unread/read tabs, mark‑all‑as‑read, and inline actions
 - **Profile (`/profile`)**: Read-only details from the authenticated administrator account
-- **Components Showcase (`/components-demo`)**: Full gallery of all UI components (buttons, badges, inputs, select, switch, alerts, progress, avatar, skeleton, cards, table, tabs, dialog, dropdown, combined example, color palette)
 
 ## 🎨 Features Breakdown
 

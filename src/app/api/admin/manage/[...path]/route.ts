@@ -30,11 +30,9 @@ async function handle(
     return proxyAdmin(request, "/api/admin/" + path.join("/"), methods);
   }
   if (
-    !["players", "games", "partner-offers"].includes(path[0] ?? "") ||
+    !["players", "games"].includes(path[0] ?? "") ||
     path.length > 2 ||
-    (path.length === 2 &&
-      !/^[a-f0-9-]{36}$/i.test(path[1]) &&
-      !(path[0] === "partner-offers" && path[1] === "check"))
+    (path.length === 2 && !/^[a-f0-9-]{36}$/i.test(path[1]))
   )
     return NextResponse.json(
       { success: false, error: { message: "Endpoint not found." } },
@@ -43,13 +41,7 @@ async function handle(
   return proxyAdmin(
     request,
     "/api/admin/" + path.join("/"),
-    path[0] === "partner-offers" && path[1] === "check"
-      ? ["POST"]
-      : path.length === 2
-        ? ["GET", "PATCH"]
-        : path[0] === "partner-offers"
-          ? ["GET", "POST"]
-          : ["GET"]
+    path.length === 2 ? ["GET", "PATCH"] : ["GET"]
   );
 }
 export const GET = handle;
